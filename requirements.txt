@@ -1,0 +1,5 @@
+matplotlib==3.6.2
+mplfinance==0.12.9b5
+pandas==1.5.2
+pandas_ta==0.3.14b0
+web3==5.31.1
