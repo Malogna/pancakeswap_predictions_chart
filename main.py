@@ -104,9 +104,13 @@ def pcs_chart(interval):
             'close': 'last'
         }
 
-        return technical_analysis(
-            pd.read_csv('candle_data.csv', index_col='timestamp', parse_dates=True).resample(
-                interval).apply(ohlc)).drop(columns=['SUPERT_10_1.0', 'SUPERTl_10_1.0', 'SUPERTs_10_1.0']).dropna()
+        candles = pd.read_csv('candle_data.csv', index_col='timestamp', parse_dates=True)
+        candles.ta.ha(append=True)
+        candles.drop(columns=['open', 'high', 'low', 'close'], inplace=True)
+        candles = candles.rename(
+            columns={'HA_open': 'open', 'HA_high': 'high', 'HA_low': 'low', 'HA_close': 'close'})
+
+        return technical_analysis(candles.resample(interval).apply(ohlc)).drop(columns=['SUPERT_10_1.0', 'SUPERTl_10_1.0', 'SUPERTs_10_1.0']).dropna()
 
     fig = mpf.figure()
     fig.suptitle('PancakeSwap BNBUSD Chart 1min via Oracle (Live)')
